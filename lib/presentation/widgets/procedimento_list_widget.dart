@@ -8,10 +8,10 @@ class ProcedimentosWidget extends StatelessWidget {
   final Function(int) excluirProcedimento;
 
   const ProcedimentosWidget({
-    Key? key,
+    super.key,
     required this.procedimentos,
     required this.excluirProcedimento,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class ProcedimentosWidget extends StatelessWidget {
         const SizedBox(height: 10),
         ListView.builder(
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: procedimentos.length,
           itemBuilder: (context, index) {
             final procedimento = procedimentos[index];
@@ -37,7 +37,7 @@ class ProcedimentosWidget extends StatelessWidget {
               trailing: IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () {
-                  excluirProcedimento(procedimento.id!);
+                  excluirProcedimento(procedimento.id as int);
                 },
               ),
               onTap: () {

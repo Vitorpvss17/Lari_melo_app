@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 import '../../../data/models/procedimento_model.dart';
 import '../../../data/repositories/procedimento_repository.dart';
 
@@ -19,10 +20,19 @@ class _CriarProcedimentoPageState extends State<CriarProcedimentoPage> {
   final _tituloController = TextEditingController();
   final _valorController = TextEditingController();
   DateTime _dataSelecionada = DateTime.now();
+  var uuid = const Uuid();
+  int generatedId = 0;
+
 
   bool _isSaving = false;
 
   final _procedimentoRepository = ProcedimentoRepository();
+
+  @override
+  void initState() {
+    super.initState();
+    generatedId = generateInt8FromUUID(); // Gera o ID uma vez
+  }
 
   @override
   void dispose() {
@@ -30,6 +40,11 @@ class _CriarProcedimentoPageState extends State<CriarProcedimentoPage> {
     _tituloController.dispose();
     _valorController.dispose();
     super.dispose();
+  }
+  int generateInt8FromUUID() {
+    var uuid = const Uuid().v4();
+    String hexPart = uuid.replaceAll('-', '').substring(0, 13); // Pegamos os primeiros 13 caracteres
+    return int.parse(hexPart, radix: 16) % 9007199254740991; // Evita ultrapassar o limite do JavaScript
   }
 
   Future<void> _salvarProcedimento() async {
@@ -44,7 +59,7 @@ class _CriarProcedimentoPageState extends State<CriarProcedimentoPage> {
         descricao: _descricaoController.text,
         valor: double.parse(_valorController.text),
         data: _dataSelecionada,
-        id: 0,
+        id: generatedId,
       );
 
       try {

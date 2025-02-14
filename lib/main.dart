@@ -9,11 +9,11 @@ void main() async {
 
   // Inicializa o Supabase
   await Supabase.initialize(
-    url: 'https://ufbvcaxhedzauecrgiwd.supabase.co',  // Substitua pelo URL do seu projeto
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVmYnZjYXhoZWR6YXVlY3JnaXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk0NTczODgsImV4cCI6MjA1NTAzMzM4OH0.W5EsGhjjMYLCUmyj_OYMONzz3eHmFuQTprX2nqQIMkc',// Substitua pela chave anônima do Supabase
+    url: 'https://ufbvcaxhedzauecrgiwd.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVmYnZjYXhoZWR6YXVlY3JnaXdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk0NTczODgsImV4cCI6MjA1NTAzMzM4OH0.W5EsGhjjMYLCUmyj_OYMONzz3eHmFuQTprX2nqQIMkc',
   );
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

@@ -20,7 +20,7 @@ class ClienteRepository {
   // Adiciona um novo cliente
   Future<void> addCliente(ClienteModel cliente) async {
     try {
-      final response = await supabase
+      await supabase
           .from('clientes')
           .insert(cliente.toJson());
 
@@ -32,7 +32,7 @@ class ClienteRepository {
   // Atualiza um cliente existente
   Future<void> updateCliente(ClienteModel cliente) async {
     try {
-      final response = await supabase
+      await supabase
           .from('clientes')
           .update(cliente.toJson())
           .eq('id', cliente.id);
@@ -45,7 +45,7 @@ class ClienteRepository {
   // Deleta um cliente
   Future<void> deleteCliente(int id) async {
     try {
-      final response = await supabase
+       await supabase
           .from('clientes')
           .delete()
           .eq('id', id);

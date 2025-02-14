@@ -33,7 +33,7 @@ class AgendamentoRepository {
   // Adiciona um novo agendamento
   Future<void> addAgendamento(AgendamentoModel agendamento) async {
     try {
-      final response = await supabase
+       await supabase
           .from('agendamento')
           .insert(agendamento.toJson());
     } catch (e) {
@@ -44,10 +44,10 @@ class AgendamentoRepository {
   // Atualiza um agendamento existente
   Future<void> updateAgendamento(AgendamentoModel agendamento) async {
     try {
-      final response = await supabase
+       await supabase
           .from('agendamento')
           .update(agendamento.toJson())
-          .eq('id', agendamento.id as Object);
+          .eq('id', agendamento.id);
 
     } catch (e) {
       throw Exception("Erro ao atualizar agendamento: $e");
@@ -57,7 +57,7 @@ class AgendamentoRepository {
   // Deleta um agendamento
   Future<void> deleteAgendamento(int id) async {
     try {
-      final response = await supabase
+      await supabase
           .from('agendamento')
           .delete()
           .eq('id', id);

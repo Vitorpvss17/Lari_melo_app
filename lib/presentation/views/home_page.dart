@@ -64,9 +64,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   String getImageUrl(String imagePath) {
-    // Extrai o nome do arquivo do caminho completo
-    final fileName = imagePath.split('/').last;
-    return "http://127.0.0.1:5000/imagens/$fileName";
+    if (imagePath.isEmpty) return ""; // Retorna vazio se não houver imagem
+
+    final fileName = imagePath.split('/').last; // Obtém o nome do arquivo
+    const supabaseBucketUrl = "https://ufbvcaxhedzauecrgiwd.supabase.co/storage/v1/object/public/clientes_fotos/";
+
+    final fullUrl = "$supabaseBucketUrl$fileName";
+    print("URL completa: $fullUrl");
+
+    return fullUrl;
   }
 
   @override
@@ -122,14 +128,14 @@ class _HomePageState extends State<HomePage> {
                 itemCount: filteredClientes.length,
                 itemBuilder: (context, index) {
                   final cliente = filteredClientes[index];
-                  return ListTile(
-                    /*leading: cliente.foto.isNotEmpty
+                   return ListTile(
+                    leading: cliente.foto.isNotEmpty
                         ? CircleAvatar(
                       backgroundImage: NetworkImage(getImageUrl(cliente.foto)),
                     )
                         : const CircleAvatar(
-                      child: Icon(Icons.person),
-                    ),*/
+                           child: Icon(Icons.person),
+                    ),
                     title: Text('${cliente.nome} ${cliente.sobrenome}'),
                     subtitle: Text(cliente.email),
                     onTap: () {

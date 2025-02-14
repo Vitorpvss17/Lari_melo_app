@@ -6,7 +6,7 @@ import '../../data/models/receita_model.dart';
 class ReceitaDetalhesPage extends StatelessWidget {
   final ReceitaModel receita;
 
-  const ReceitaDetalhesPage({Key? key, required this.receita}) : super(key: key);
+  const ReceitaDetalhesPage({super.key, required this.receita});
 
   @override
   Widget build(BuildContext context) {

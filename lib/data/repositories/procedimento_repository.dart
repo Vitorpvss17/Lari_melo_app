@@ -20,7 +20,7 @@ class ProcedimentoRepository {
   // Adiciona um novo procedimento
   Future<void> addProcedimento(ProcedimentoModel procedimento) async {
     try {
-      final response = await supabase
+      await supabase
           .from('procedimento')
           .insert(procedimento.toJson());
     } catch (e) {
@@ -31,10 +31,10 @@ class ProcedimentoRepository {
   // Atualiza um procedimento existente
   Future<void> updateProcedimento(ProcedimentoModel procedimento) async {
     try {
-      final response = await supabase
+      await supabase
           .from('procedimento')
           .update(procedimento.toJson())
-          .eq('id', procedimento.id as Object);
+          .eq('id', procedimento.id);
     } catch (e) {
       throw Exception("Erro ao atualizar procedimento: $e");
     }
@@ -43,7 +43,7 @@ class ProcedimentoRepository {
   // Deleta um procedimento
   Future<void> deleteProcedimento(int id) async {
     try {
-      final response = await supabase
+      await supabase
           .from('procedimento')
           .delete()
           .eq('id', id);

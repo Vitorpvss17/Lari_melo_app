@@ -35,7 +35,7 @@ class ReceitaRepository {
       await supabase
           .from('receitas')
           .update(receita.toJson())
-          .eq('id', receita.id as Object);
+          .eq('id', receita.id);
     } catch (e) {
       throw Exception("Erro ao atualizar receita: $e");
     }

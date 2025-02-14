@@ -7,9 +7,9 @@ class ProcedimentoDetalhesPage extends StatelessWidget {
   final ProcedimentoModel procedimento;
 
   const ProcedimentoDetalhesPage({
-    Key? key,
+    super.key,
     required this.procedimento,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../data/models/cliente_model.dart';
 import '../../../data/repositories/cliente_repository.dart';
 import 'package:image_picker/image_picker.dart';
+
 
 
 class CriarClientePage extends StatefulWidget {
@@ -19,6 +21,7 @@ class _CriarClientePageState extends State<CriarClientePage> {
   final _telefoneController = TextEditingController();
   final _emailController = TextEditingController();
   String? _fotoBase64;
+  final supabase = Supabase.instance.client;
 
   final ClienteRepository _clienteRepository = ClienteRepository(); // Usando o repositório
 
@@ -40,16 +43,34 @@ class _CriarClientePageState extends State<CriarClientePage> {
         return;
       }
 
-      ClienteModel novoCliente = ClienteModel(
-        id: DateTime.now().millisecondsSinceEpoch, // Gerando um ID único
-        nome: _nomeController.text,
-        sobrenome: _sobrenomeController.text,
-        telefone: _telefoneController.text,
-        email: _emailController.text,
-        foto: _fotoBase64!, // Armazena diretamente o Uint8List
-      );
+      // Converte a string Base64 para bytes
+      final bytes = base64Decode(_fotoBase64!);
+
+      // Gera um nome único para o arquivo
+      final fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
 
       try {
+        // Envia os bytes diretamente para o Supabase Storage
+        await supabase.storage
+            .from('clientes_fotos') // Nome do bucket
+            .uploadBinary(fileName, bytes); // Usa uploadBinary para enviar bytes
+
+        // Obtém a URL pública da imagem
+        final imageUrl = supabase.storage
+            .from('clientes_fotos')
+            .getPublicUrl(fileName);
+
+        // Cria o cliente com a URL da imagem
+        ClienteModel novoCliente = ClienteModel(
+          id: DateTime.now().millisecondsSinceEpoch,
+          nome: _nomeController.text,
+          sobrenome: _sobrenomeController.text,
+          telefone: _telefoneController.text,
+          email: _emailController.text,
+          foto: imageUrl, // Armazena a URL da imagem
+        );
+
+        // Salva o cliente no repositório
         await _clienteRepository.addCliente(novoCliente);
         Navigator.pop(context, novoCliente); // Retorna o cliente criado
       } catch (e) {
@@ -65,7 +86,6 @@ class _CriarClientePageState extends State<CriarClientePage> {
     if (pickedFile != null) {
       final bytes = await pickedFile.readAsBytes();
       final base64String = base64Encode(bytes);
-      print('Base64 da imagem: $base64String'); // Log para verificar a string Base64
       setState(() {
         _fotoBase64 = base64String;
       });
@@ -171,3 +191,5 @@ class _CriarClientePageState extends State<CriarClientePage> {
     );
   }
 }
+
+

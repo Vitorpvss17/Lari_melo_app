@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import '../../data/models/agendamento_model.dart';
 import '../../data/models/cliente_model.dart';
 import '../../data/models/procedimento_model.dart';
@@ -29,11 +30,21 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
   DateTime? _selectedDate;
   TimeOfDay? _selectedTime;
   final TextEditingController _servicoController = TextEditingController();
+  int generatedId = 0;
+
+
 
   @override
   void initState() {
     super.initState();
     _carregarDados();
+    generatedId = generateInt8FromUUID();
+  }
+
+  int generateInt8FromUUID() {
+    var uuid = const Uuid().v4();
+    String hexPart = uuid.replaceAll('-', '').substring(0, 13); // Pegamos os primeiros 13 caracteres
+    return int.parse(hexPart, radix: 16) % 9007199254740991; // Evita ultrapassar o limite do JavaScript
   }
 
   void _carregarDados() {
@@ -101,7 +112,7 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
         clienteId: widget.cliente.id,
         data: fullDateTime,
         servico: _servicoController.text,
-        id: 0, // Captura o serviço inserido
+        id: generatedId, // Captura o serviço inserido
       );
 
       try {

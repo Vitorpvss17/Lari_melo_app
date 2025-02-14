@@ -8,10 +8,10 @@ class ReceitasWidget extends StatelessWidget {
   final Function(int) excluirReceita;
 
   const ReceitasWidget({
-    Key? key,
+    super.key,
     required this.receitas,
     required this.excluirReceita,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class ReceitasWidget extends StatelessWidget {
         const SizedBox(height: 10),
         ListView.builder(
           shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: receitas.length,
           itemBuilder: (context, index) {
             final receita = receitas[index];
@@ -44,7 +44,7 @@ class ReceitasWidget extends StatelessWidget {
               trailing: IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () {
-                  excluirReceita(receita.id!);
+                  excluirReceita(receita.id as int);
                 },
               ),
             );
