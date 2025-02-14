@@ -1,56 +1,55 @@
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/receita_model.dart';
 
 class ReceitaRepository {
-  final String apiUrl = "http://127.0.0.1:5000/receitas/"; // URL da sua API
-  final String apiUrl1 = "http://127.0.0.1:5000/receitas";
+  final SupabaseClient supabase = Supabase.instance.client;
 
   // Busca a lista de receitas
   Future<List<ReceitaModel>> fetchReceitas({required int clienteId}) async {
-    final response = await http.get(Uri.parse('$apiUrl?clienteId=$clienteId'));
+    try {
+      final List<dynamic> response = await supabase
+          .from('receitas')
+          .select()
+          .eq('clienteId', clienteId);  // Filtra por clienteId
 
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonData = jsonDecode(response.body);
-      return jsonData.map((e) => ReceitaModel.fromJson(e)).toList();
-    } else {
-      throw Exception("Erro ao carregar receitas");
+      return response.map((e) => ReceitaModel.fromJson(e)).toList();
+    } catch (e) {
+      throw Exception("Erro ao carregar receitas: $e");
     }
   }
 
   // Adiciona uma nova receita
   Future<void> addReceita(ReceitaModel receita) async {
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(receita.toJson()),
-    );
-
-    if (response.statusCode != 201) {
-      throw Exception("Erro ao adicionar receita");
+    try {
+      await supabase
+          .from('receitas')
+          .insert(receita.toJson());
+    } catch (e) {
+      throw Exception("Erro ao adicionar receita: $e");
     }
   }
 
   // Atualiza uma receita existente
   Future<void> updateReceita(ReceitaModel receita) async {
-    final response = await http.put(
-      Uri.parse('$apiUrl/${receita.id}'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(receita.toJson()),
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception("Erro ao atualizar receita");
+    try {
+      await supabase
+          .from('receitas')
+          .update(receita.toJson())
+          .eq('id', receita.id as Object);
+    } catch (e) {
+      throw Exception("Erro ao atualizar receita: $e");
     }
   }
 
   // Deleta uma receita
   Future<void> deleteReceita(int id) async {
-    final response = await http.delete(Uri.parse('$apiUrl1/$id'));
-
-    if (response.statusCode != 200) {
-      throw Exception("Erro ao deletar receita");
+    try {
+      await supabase
+          .from('receitas')
+          .delete()
+          .eq('id', id);
+    } catch (e) {
+      throw Exception("Erro ao deletar receita: $e");
     }
   }
 }

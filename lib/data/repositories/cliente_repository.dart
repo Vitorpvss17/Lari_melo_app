@@ -1,57 +1,57 @@
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/cliente_model.dart';
 
 class ClienteRepository {
-  final String apiUrl = "http://127.0.0.1:5000/clientes/";
-  final String apiUrl1 = "http://127.0.0.1:5000/clientes";// URL da sua API
+  final SupabaseClient supabase = Supabase.instance.client;
 
   // Busca a lista de clientes
   Future<List<ClienteModel>> fetchClientes() async {
-    final response = await http.get(Uri.parse(apiUrl));
+    try {
+      final response = await supabase
+          .from('clientes')
+          .select();
 
-    if (response.statusCode == 200) {
-      final List<dynamic> jsonData = jsonDecode(response.body);
-      return jsonData.map((e) => ClienteModel.fromJson(e)).toList();
-    } else {
-      throw Exception("Erro ao carregar clientes");
+      return response.map((e) => ClienteModel.fromJson(e)).toList();
+    } catch (e) {
+      throw Exception("Erro ao carregar clientes: $e");
     }
   }
 
   // Adiciona um novo cliente
   Future<void> addCliente(ClienteModel cliente) async {
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(cliente.toJson()),
-    );
+    try {
+      final response = await supabase
+          .from('clientes')
+          .insert(cliente.toJson());
 
-    if (response.statusCode != 201) {
-      throw Exception("Erro ao adicionar cliente");
+    } catch (e) {
+      throw Exception("Erro ao adicionar cliente: $e");
     }
   }
 
   // Atualiza um cliente existente
   Future<void> updateCliente(ClienteModel cliente) async {
-    final response = await http.put(
-      Uri.parse('$apiUrl/${cliente.id}'),
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode(cliente.toJson()),
-    );
+    try {
+      final response = await supabase
+          .from('clientes')
+          .update(cliente.toJson())
+          .eq('id', cliente.id);
 
-    if (response.statusCode != 200) {
-      throw Exception("Erro ao atualizar cliente");
+    } catch (e) {
+      throw Exception("Erro ao atualizar cliente: $e");
     }
   }
 
   // Deleta um cliente
   Future<void> deleteCliente(int id) async {
-    final response = await http.delete(Uri.parse('$apiUrl1/$id'));
+    try {
+      final response = await supabase
+          .from('clientes')
+          .delete()
+          .eq('id', id);
 
-
-    if (response.statusCode != 200) {
-      throw Exception("Erro ao deletar cliente");
+    } catch (e) {
+      throw Exception("Erro ao deletar cliente: $e");
     }
   }
 }
