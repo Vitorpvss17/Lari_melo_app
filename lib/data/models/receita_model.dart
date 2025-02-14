@@ -1,5 +1,5 @@
 class ReceitaModel {
-  final int? id;
+  final int id;
   final int clienteId;
   final String titulo;
   final String descricao;
@@ -8,7 +8,7 @@ class ReceitaModel {
   final String servico;  // Adicionando o campo servico
 
   ReceitaModel({
-    this.id,
+    required this.id,
     required this.clienteId,
     required this.titulo,
     required this.descricao,

@@ -39,6 +39,7 @@ class _CriarReceitaPageState extends State<CriarReceitaPage> {
         descricao: _descricaoController.text,
         valor: double.tryParse(_valorController.text) ?? 0.0,
         data: _dataSelecionada, servico: _servicoController.text,
+        id: 0,
       );
 
       try {

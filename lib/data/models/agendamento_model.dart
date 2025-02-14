@@ -1,11 +1,11 @@
 class AgendamentoModel {
-  final int? id;
+  final int id;
   final int clienteId;
   final DateTime data;
   final String servico;
 
   AgendamentoModel({
-    this.id,
+    required this.id,
     required this.clienteId,
     required this.data,
     required this.servico,

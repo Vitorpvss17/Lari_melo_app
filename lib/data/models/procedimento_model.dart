@@ -1,5 +1,5 @@
 class ProcedimentoModel {
-  final int? id;
+  final int id;
   final int clienteId;
   final String titulo;
   final String descricao;
@@ -7,7 +7,7 @@ class ProcedimentoModel {
   final DateTime data;
 
   ProcedimentoModel({
-    this.id,
+    required this.id,
     required this.clienteId,
     required this.titulo,
     required this.descricao,

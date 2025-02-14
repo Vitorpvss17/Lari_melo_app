@@ -44,6 +44,7 @@ class _CriarProcedimentoPageState extends State<CriarProcedimentoPage> {
         descricao: _descricaoController.text,
         valor: double.parse(_valorController.text),
         data: _dataSelecionada,
+        id: 0,
       );
 
       try {

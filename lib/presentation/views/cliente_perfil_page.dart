@@ -40,7 +40,7 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
     setState(() {
       _agendamentos = AgendamentoRepository().fetchAgendamentos(clienteId: widget.cliente.id);
       _receitas = ReceitaRepository().fetchReceitas(clienteId: widget.cliente.id);
-      _procedimentos = ProcedimentoRepository().fetchProcedimentos(clienteId: widget.cliente.id) as Future<List<ProcedimentoModel>>;
+      _procedimentos = ProcedimentoRepository().fetchProcedimentos(clienteId: widget.cliente.id);
     });
   }
 
@@ -100,7 +100,8 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
       AgendamentoModel novoAgendamento = AgendamentoModel(
         clienteId: widget.cliente.id,
         data: fullDateTime,
-        servico: _servicoController.text, // Captura o serviço inserido
+        servico: _servicoController.text,
+        id: 0, // Captura o serviço inserido
       );
 
       try {
