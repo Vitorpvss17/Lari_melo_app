@@ -144,9 +144,9 @@ class _CriarClientePageState extends State<CriarClientePage> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor, insira o email';
-                  } else if (!RegExp(r'^[\w-]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                  } /*else if (!RegExp(r'^[\w-]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
                     return 'Por favor, insira um email válido';
-                  }
+                  }*/
                   return null;
                 },
               ),
