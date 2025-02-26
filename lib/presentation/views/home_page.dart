@@ -23,7 +23,9 @@ class _HomePageState extends State<HomePage> {
   List<ClienteModel> _clientes = [];
   List<AgendamentoModel> _agendamentos = [];
   String _searchQuery = "";
-  String _filtroAgendamento = "dia"; // Pode ser "dia", "mes" ou "ano"
+  String _filtroAgendamento = "dia";
+
+  final String backgroundUrl = "https://ufbvcaxhedzauecrgiwd.supabase.co/storage/v1/object/public/background/background.jpeg";
 
 
   @override
@@ -64,10 +66,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   String getImageUrl(String imagePath) {
-    if (imagePath.isEmpty) return ""; // Retorna vazio se não houver imagem
+    if (imagePath.isEmpty) return "";
 
-    final fileName = imagePath.split('/').last; // Obtém o nome do arquivo
+    final fileName = imagePath.split('/').last;
     const supabaseBucketUrl = "https://ufbvcaxhedzauecrgiwd.supabase.co/storage/v1/object/public/clientes_fotos/";
+
 
     final fullUrl = "$supabaseBucketUrl$fileName";
     print("URL completa: $fullUrl");
@@ -100,134 +103,138 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Gestão Clínica Estética'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Campo de busca
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Buscar Cliente',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.search),
+      body: Container(
+        decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(backgroundUrl),
+            fit: BoxFit.cover),),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Campo de busca
+              TextField(
+                decoration: const InputDecoration(
+                  labelText: 'Buscar Cliente',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.search),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value;
+                  });
+                },
               ),
-              onChanged: (value) {
-                setState(() {
-                  _searchQuery = value;
-                });
-              },
-            ),
-            const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-            // Lista de Clientes
-            Expanded(
-              child: filteredClientes.isEmpty
-                  ? const Center(child: Text('Nenhum cliente encontrado.'))
-                  : ListView.builder(
-                itemCount: filteredClientes.length,
-                itemBuilder: (context, index) {
-                  final cliente = filteredClientes[index];
-                   return ListTile(
-                    leading: cliente.foto.isNotEmpty
-                        ? CircleAvatar(
-                      backgroundImage: NetworkImage(getImageUrl(cliente.foto)),
-                    )
-                        : const CircleAvatar(
-                           child: Icon(Icons.person),
-                    ),
-                    title: Text('${cliente.nome} ${cliente.sobrenome}'),
-                    subtitle: Text(cliente.email),
-                    onTap: () {
+              // Lista de Clientes
+              Expanded(
+                child: filteredClientes.isEmpty
+                    ? const Center(child: Text('Nenhum cliente encontrado.'))
+                    : ListView.builder(
+                  itemCount: filteredClientes.length,
+                  itemBuilder: (context, index) {
+                    final cliente = filteredClientes[index];
+                     return ListTile(
+                      leading: cliente.foto.isNotEmpty
+                          ? CircleAvatar(
+                        backgroundImage: NetworkImage(getImageUrl(cliente.foto)),
+                      )
+                          : const CircleAvatar(
+                             child: Icon(Icons.person),
+                      ),
+                      title: Text('${cliente.nome} ${cliente.sobrenome}'),
+                      subtitle: Text(cliente.email),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ClienteViewPage(cliente: cliente),
+                          ),
+                        ).then((_) => _loadData());
+                      },
+                      trailing: IconButton(
+                        onPressed: () async {
+                          final confirm = await showDialog<bool>(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Excluir Cliente'),
+                              content: const Text(
+                                  'Tem certeza que deseja excluir este cliente?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, false),
+                                  child: const Text('Cancelar'),
+                                ),
+                                TextButton(
+                                  onPressed: () =>
+                                      Navigator.pop(context, true),
+                                  child: const Text('Excluir'),
+                                ),
+                              ],
+                            ),
+                          );
+
+                          if (confirm ?? false) {
+                            await _deleteCliente(cliente.id);
+                          }
+                                              },
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Filtro e Lista de Agendamentos
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  DropdownButton<String>(
+                    value: _filtroAgendamento,
+                    items: const [
+                      DropdownMenuItem(value: "dia", child: Text("Hoje")),
+                      DropdownMenuItem(value: "mes", child: Text("Este mês")),
+                      DropdownMenuItem(value: "ano", child: Text("Este ano")),
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        _filtroAgendamento = value!;
+                      });
+                    },
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              ClienteViewPage(cliente: cliente),
-                        ),
+                            builder: (context) => const CriarClientePage()),
                       ).then((_) => _loadData());
                     },
-                    trailing: IconButton(
-                      onPressed: () async {
-                        final confirm = await showDialog<bool>(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('Excluir Cliente'),
-                            content: const Text(
-                                'Tem certeza que deseja excluir este cliente?'),
-                            actions: [
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, false),
-                                child: const Text('Cancelar'),
-                              ),
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, true),
-                                child: const Text('Excluir'),
-                              ),
-                            ],
-                          ),
-                        );
-
-                        if (confirm ?? false) {
-                          await _deleteCliente(cliente.id);
-                        }
-                                            },
-                      icon: const Icon(Icons.delete, color: Colors.red),
-                    ),
-                  );
-                },
+                    child: const Text('Adicionar Cliente'),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-            // Filtro e Lista de Agendamentos
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                DropdownButton<String>(
-                  value: _filtroAgendamento,
-                  items: const [
-                    DropdownMenuItem(value: "dia", child: Text("Hoje")),
-                    DropdownMenuItem(value: "mes", child: Text("Este mês")),
-                    DropdownMenuItem(value: "ano", child: Text("Este ano")),
-                  ],
-                  onChanged: (value) {
-                    setState(() {
-                      _filtroAgendamento = value!;
-                    });
+              Expanded(
+                child: filteredAgendamentos.isEmpty
+                    ? const Center(child: Text('Nenhum agendamento encontrado.'))
+                    : ListView.builder(
+                  itemCount: filteredAgendamentos.length,
+                  itemBuilder: (context, index) {
+                    final agendamento = filteredAgendamentos[index];
+                    return ListTile(
+                      title: Text('Serviço: ${agendamento.servico}'),
+                      subtitle: Text('Data: ${agendamento.data}'),
+                    );
                   },
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const CriarClientePage()),
-                    ).then((_) => _loadData());
-                  },
-                  child: const Text('Adicionar Cliente'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-
-            Expanded(
-              child: filteredAgendamentos.isEmpty
-                  ? const Center(child: Text('Nenhum agendamento encontrado.'))
-                  : ListView.builder(
-                itemCount: filteredAgendamentos.length,
-                itemBuilder: (context, index) {
-                  final agendamento = filteredAgendamentos[index];
-                  return ListTile(
-                    title: Text('Serviço: ${agendamento.servico}'),
-                    subtitle: Text('Data: ${agendamento.data}'),
-                  );
-                },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

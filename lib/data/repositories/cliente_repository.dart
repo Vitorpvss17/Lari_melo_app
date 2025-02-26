@@ -42,16 +42,42 @@ class ClienteRepository {
     }
   }
 
-  // Deleta um cliente
   Future<void> deleteCliente(int id) async {
     try {
-       await supabase
+      final cliente = await supabase
+          .from('clientes')
+          .select('foto')
+          .eq('id', id)
+          .single();
+
+      if (cliente['foto'] != null && cliente['foto'].isNotEmpty) {
+        final fileName = cliente['foto'].split('/').last;
+        await supabase
+            .storage
+            .from('clientes_fotos')
+            .remove([fileName]);
+      }
+      await supabase
+          .from('receitas')
+          .delete()
+          .eq('clienteId', id);
+
+      await supabase
+          .from('procedimentos')
+          .delete()
+          .eq('clienteId', id);
+
+      await supabase
+          .from('agendamentos')
+          .delete()
+          .eq('clienteId', id);
+      await supabase
           .from('clientes')
           .delete()
           .eq('id', id);
 
     } catch (e) {
-      throw Exception("Erro ao deletar cliente: $e");
+      throw Exception("Erro ao deletar cliente e dados relacionados: $e");
     }
   }
 }
