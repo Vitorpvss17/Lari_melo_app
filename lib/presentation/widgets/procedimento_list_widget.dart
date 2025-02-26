@@ -31,9 +31,9 @@ class ProcedimentosWidget extends StatelessWidget {
             final procedimento = procedimentos[index];
             return ListTile(
               title: Text(procedimento.titulo),
-              subtitle: Text(
+              /*subtitle: Text(
                 'Valor: R\$${procedimento.valor.toStringAsFixed(2)}',
-              ),
+              ),*/
               trailing: IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () {

@@ -44,7 +44,7 @@ class ReceitasWidget extends StatelessWidget {
               trailing: IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () {
-                  excluirReceita(receita.id as int);
+                  excluirReceita(receita.id);
                 },
               ),
             );
