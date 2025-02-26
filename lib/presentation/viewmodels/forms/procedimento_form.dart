@@ -22,6 +22,7 @@ class _CriarProcedimentoPageState extends State<CriarProcedimentoPage> {
   DateTime _dataSelecionada = DateTime.now();
   var uuid = const Uuid();
   int generatedId = 0;
+  final String backgroundUrl = "https://ufbvcaxhedzauecrgiwd.supabase.co/storage/v1/object/public/background/background.jpeg";
 
 
   bool _isSaving = false;
@@ -115,62 +116,66 @@ class _CriarProcedimentoPageState extends State<CriarProcedimentoPage> {
       appBar: AppBar(
         title: const Text('Criar Procedimento'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: <Widget>[
-              TextFormField(
-                controller: _tituloController,
-                decoration: const InputDecoration(labelText: 'Título'),
-                validator: (value) => value?.isEmpty ?? true ? 'Por favor, insira o título' : null,
-              ),
-              TextFormField(
-                controller: _descricaoController,
-                decoration: const InputDecoration(labelText: 'Descrição'),
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                textInputAction: TextInputAction.newline,
-                validator: (value) => value?.isEmpty ?? true ? 'Por favor, insira a descrição' : null,
-              ),
-              TextFormField(
-                controller: _valorController,
-                decoration: const InputDecoration(labelText: 'Valor'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value?.isEmpty ?? true) return 'Por favor, insira o valor';
-                  try {
-                    double parsedValue = double.parse(value!);
-                    if (parsedValue <= 0) return 'O valor deve ser maior que zero';
-                  } catch (e) {
-                    return 'Por favor, insira um valor válido';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              Row(
-                children: <Widget>[
-                  Text(
-                    'Data: $formattedDate',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () => _selecionarData(context),
-                    child: const Text('Selecionar Data'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _isSaving ? null : _salvarProcedimento,
-                child: _isSaving
-                    ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text('Salvar'),
-              ),
-            ],
+      body: Container(
+        decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(backgroundUrl),
+            fit: BoxFit.cover),),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: <Widget>[
+                TextFormField(
+                  controller: _tituloController,
+                  decoration: const InputDecoration(labelText: 'Título'),
+                  validator: (value) => value?.isEmpty ?? true ? 'Por favor, insira o título' : null,
+                ),
+                TextFormField(
+                  controller: _descricaoController,
+                  decoration: const InputDecoration(labelText: 'Descrição'),
+                  maxLines: null,
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.newline,
+                  validator: (value) => value?.isEmpty ?? true ? 'Por favor, insira a descrição' : null,
+                ),
+                TextFormField(
+                  controller: _valorController,
+                  decoration: const InputDecoration(labelText: 'Valor'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value?.isEmpty ?? true) return 'Por favor, insira o valor';
+                    try {
+                      double parsedValue = double.parse(value!);
+                      if (parsedValue <= 0) return 'O valor deve ser maior que zero';
+                    } catch (e) {
+                      return 'Por favor, insira um valor válido';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: <Widget>[
+                    Text(
+                      'Data: $formattedDate',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () => _selecionarData(context),
+                      child: const Text('Selecionar Data'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _isSaving ? null : _salvarProcedimento,
+                  child: _isSaving
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text('Salvar'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

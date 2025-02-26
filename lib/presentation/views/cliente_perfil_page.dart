@@ -31,6 +31,7 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
   TimeOfDay? _selectedTime;
   final TextEditingController _servicoController = TextEditingController();
   int generatedId = 0;
+  final String backgroundUrl = "https://ufbvcaxhedzauecrgiwd.supabase.co/storage/v1/object/public/background/background.jpeg";
 
 
 
@@ -151,160 +152,164 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
       appBar: AppBar(
         title: const Text('Perfil do Cliente'),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClienteInfoWidget(cliente: widget.cliente),
-            const SizedBox(height: 20),
-            FutureBuilder<List<AgendamentoModel>>(
-              future: _agendamentos,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return const Center(child: Text('Erro ao carregar agendamentos.'));
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('Nenhum agendamento encontrado.'));
-                } else {
-                  final agendamentos = snapshot.data!;
-                  return AgendamentosWidget(
-                    agendamentos: agendamentos,
-                    excluirAgendamento: _excluirAgendamento,
-                  );
-                }
-              },
-            ),
-            const SizedBox(height: 20),
-            FutureBuilder<List<ReceitaModel>>(
-              future: _receitas,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return const Center(child: Text('Erro ao carregar receitas.'));
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('Nenhuma receita encontrada.'));
-                } else {
-                  final receitas = snapshot.data!;
-                  return ReceitasWidget(
-                    receitas: receitas,
-                    excluirReceita: _excluirReceita,
-                  );
-                }
-              },
-            ),
-            const SizedBox(height: 20),
-            FutureBuilder<List<ProcedimentoModel>>(
-              future: _procedimentos,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return const Center(child: Text('Erro ao carregar procedimentos.'));
-                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Center(child: Text('Nenhum procedimento encontrado.'));
-                } else {
-                  final procedimentos = snapshot.data!;
-                  return ProcedimentosWidget(
-                    procedimentos: procedimentos,
-                    excluirProcedimento: _excluirProcedimento,
-                  );
-                }
-              },
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text('Criar Agendamento'),
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              // Campo de texto para inserir o serviço
-                              TextFormField(
-                                controller: _servicoController,
-                                decoration: const InputDecoration(
-                                  labelText: 'Serviço',
+      body: Container(
+        decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(backgroundUrl),
+            fit: BoxFit.cover),),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClienteInfoWidget(cliente: widget.cliente),
+              const SizedBox(height: 20),
+              FutureBuilder<List<AgendamentoModel>>(
+                future: _agendamentos,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text('Erro ao carregar agendamentos.'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(child: Text('Nenhum agendamento encontrado.'));
+                  } else {
+                    final agendamentos = snapshot.data!;
+                    return AgendamentosWidget(
+                      agendamentos: agendamentos,
+                      excluirAgendamento: _excluirAgendamento,
+                    );
+                  }
+                },
+              ),
+              const SizedBox(height: 20),
+              FutureBuilder<List<ReceitaModel>>(
+                future: _receitas,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text('Erro ao carregar receitas.'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(child: Text('Nenhuma receita encontrada.'));
+                  } else {
+                    final receitas = snapshot.data!;
+                    return ReceitasWidget(
+                      receitas: receitas,
+                      excluirReceita: _excluirReceita,
+                    );
+                  }
+                },
+              ),
+              const SizedBox(height: 20),
+              FutureBuilder<List<ProcedimentoModel>>(
+                future: _procedimentos,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text('Erro ao carregar procedimentos.'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(child: Text('Nenhum procedimento encontrado.'));
+                  } else {
+                    final procedimentos = snapshot.data!;
+                    return ProcedimentosWidget(
+                      procedimentos: procedimentos,
+                      excluirProcedimento: _excluirProcedimento,
+                    );
+                  }
+                },
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Criar Agendamento'),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                // Campo de texto para inserir o serviço
+                                TextFormField(
+                                  controller: _servicoController,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Serviço',
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(height: 16),
-                              // Botão para selecionar a data
-                              ElevatedButton(
-                                onPressed: () async {
-                                  await _selecionarData(context);
+                                const SizedBox(height: 16),
+                                // Botão para selecionar a data
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    await _selecionarData(context);
+                                  },
+                                  child: Text(_selectedDate == null
+                                      ? 'Selecionar Data'
+                                      : 'Data: ${_selectedDate!.toLocal().toString().split(' ')[0]}'),
+                                ),
+                                const SizedBox(height: 8),
+                                // Botão para selecionar a hora
+                                ElevatedButton(
+                                  onPressed: () async {
+                                    await _selecionarHora(context);
+                                  },
+                                  child: Text(_selectedTime == null
+                                      ? 'Selecionar Hora'
+                                      : 'Hora: ${_selectedTime!.format(context)}'),
+                                ),
+                              ],
+                            ),
+                            actions: [
+                              // Botão de cancelar
+                              TextButton(
+                                child: const Text('Cancelar'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
                                 },
-                                child: Text(_selectedDate == null
-                                    ? 'Selecionar Data'
-                                    : 'Data: ${_selectedDate!.toLocal().toString().split(' ')[0]}'),
                               ),
-                              const SizedBox(height: 8),
-                              // Botão para selecionar a hora
-                              ElevatedButton(
+                              // Botão de confirmar o agendamento
+                              TextButton(
+                                child: const Text('Confirmar'),
                                 onPressed: () async {
-                                  await _selecionarHora(context);
+                                  await _confirmarAgendamento();
+                                  Navigator.of(context).pop(); // Fechar o pop-up
                                 },
-                                child: Text(_selectedTime == null
-                                    ? 'Selecionar Hora'
-                                    : 'Hora: ${_selectedTime!.format(context)}'),
                               ),
                             ],
-                          ),
-                          actions: [
-                            // Botão de cancelar
-                            TextButton(
-                              child: const Text('Cancelar'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                            // Botão de confirmar o agendamento
-                            TextButton(
-                              child: const Text('Confirmar'),
-                              onPressed: () async {
-                                await _confirmarAgendamento();
-                                Navigator.of(context).pop(); // Fechar o pop-up
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  child: const Text('Agendar'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CriarReceitaPage(clienteId: widget.cliente.id),
-                      ),
-                    ).then((_) => _carregarDados()); // Recarrega os dados após retornar
-                  },
-                  child: const Text('Nova Receita'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CriarProcedimentoPage(clienteId: widget.cliente.id),
-                      ),
-                    ).then((_) => _carregarDados()); // Recarrega os dados após retornar
-                  },
-                  child: const Text('Novo Procedimento'),
-                ),
-              ],
-            ),
-          ],
+                          );
+                        },
+                      );
+                    },
+                    child: const Text('Agendar'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CriarReceitaPage(clienteId: widget.cliente.id),
+                        ),
+                      ).then((_) => _carregarDados()); // Recarrega os dados após retornar
+                    },
+                    child: const Text('Nova Receita'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CriarProcedimentoPage(clienteId: widget.cliente.id),
+                        ),
+                      ).then((_) => _carregarDados()); // Recarrega os dados após retornar
+                    },
+                    child: const Text('Novo Procedimento'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

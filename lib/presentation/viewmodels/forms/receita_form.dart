@@ -22,6 +22,7 @@ class _CriarReceitaPageState extends State<CriarReceitaPage> {
   final _servicoController = TextEditingController();
   final _valorController = TextEditingController();
   DateTime _dataSelecionada = DateTime.now();
+  final String backgroundUrl = "https://ufbvcaxhedzauecrgiwd.supabase.co/storage/v1/object/public/background/background.jpeg";
 
 
 
@@ -96,82 +97,86 @@ class _CriarReceitaPageState extends State<CriarReceitaPage> {
       appBar: AppBar(
         title: const Text('Criar Receita'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: <Widget>[
-              TextFormField(
-                controller: _tituloController,
-                decoration: const InputDecoration(labelText: 'Título'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira o título';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _servicoController,
-                decoration: const InputDecoration(labelText: 'Serviço'),
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                textInputAction: TextInputAction.newline,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira o serviço';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _descricaoController,
-                decoration: const InputDecoration(labelText: 'Descrição'),
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                textInputAction: TextInputAction.newline,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira a descrição';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _valorController,
-                decoration: const InputDecoration(labelText: 'Valor'),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira o valor';
-                  }
-                  if (double.tryParse(value) == null) {
-                    return 'Por favor, insira um valor válido';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    'Data: ${_dataSelecionada.toLocal().toString().split(' ')[0]}',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  ElevatedButton(
-                    onPressed: () => _selecionarData(context),
-                    child: const Text('Selecionar Data'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _salvarReceita,
-                child: const Text('Salvar'),
-              ),
-            ],
+      body: Container(
+        decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(backgroundUrl),
+            fit: BoxFit.cover),),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: <Widget>[
+                TextFormField(
+                  controller: _tituloController,
+                  decoration: const InputDecoration(labelText: 'Título'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira o título';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _servicoController,
+                  decoration: const InputDecoration(labelText: 'Serviço'),
+                  maxLines: null,
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.newline,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira o serviço';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _descricaoController,
+                  decoration: const InputDecoration(labelText: 'Descrição'),
+                  maxLines: null,
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.newline,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira a descrição';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _valorController,
+                  decoration: const InputDecoration(labelText: 'Valor'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira o valor';
+                    }
+                    if (double.tryParse(value) == null) {
+                      return 'Por favor, insira um valor válido';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      'Data: ${_dataSelecionada.toLocal().toString().split(' ')[0]}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    ElevatedButton(
+                      onPressed: () => _selecionarData(context),
+                      child: const Text('Selecionar Data'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _salvarReceita,
+                  child: const Text('Salvar'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

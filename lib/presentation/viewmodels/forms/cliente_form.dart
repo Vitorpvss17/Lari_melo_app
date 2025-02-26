@@ -22,6 +22,7 @@ class _CriarClientePageState extends State<CriarClientePage> {
   final _emailController = TextEditingController();
   String? _fotoBase64;
   final supabase = Supabase.instance.client;
+  final String backgroundUrl = "https://ufbvcaxhedzauecrgiwd.supabase.co/storage/v1/object/public/background/background.jpeg";
 
   final ClienteRepository _clienteRepository = ClienteRepository(); // Usando o repositório
 
@@ -102,89 +103,93 @@ class _CriarClientePageState extends State<CriarClientePage> {
       appBar: AppBar(
         title: const Text('Criar Cliente'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: <Widget>[
-              TextFormField(
-                controller: _nomeController,
-                decoration: const InputDecoration(labelText: 'Nome'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira o nome';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _sobrenomeController,
-                decoration: const InputDecoration(labelText: 'Sobrenome'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira o sobrenome';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _telefoneController,
-                decoration: const InputDecoration(labelText: 'Telefone'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira o telefone';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira o email';
-                  } /*else if (!RegExp(r'^[\w-]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                    return 'Por favor, insira um email válido';
-                  }*/
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              GestureDetector(
-                onTap: _pickImage,
-                child: _fotoBase64 == null
-                    ? const Column(
-                  children: [
-                    Icon(Icons.camera_alt, size: 50),
-                    SizedBox(height: 8),
-                    Text('Selecione uma foto'),
-                  ],
-                )
-                    : Image.memory(
-                  base64Decode(_fotoBase64!),
-                  height: 100,
-                  width: 100,
-                  fit: BoxFit.cover,
+      body: Container(
+        decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(backgroundUrl),
+            fit: BoxFit.cover),),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: ListView(
+              children: <Widget>[
+                TextFormField(
+                  controller: _nomeController,
+                  decoration: const InputDecoration(labelText: 'Nome'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira o nome';
+                    }
+                    return null;
+                  },
                 ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    onPressed: _salvarCliente,
-                    child: const Text('Salvar'),
+                TextFormField(
+                  controller: _sobrenomeController,
+                  decoration: const InputDecoration(labelText: 'Sobrenome'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira o sobrenome';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _telefoneController,
+                  decoration: const InputDecoration(labelText: 'Telefone'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira o telefone';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(labelText: 'Email'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira o email';
+                    } /*else if (!RegExp(r'^[\w-]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                      return 'Por favor, insira um email válido';
+                    }*/
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                GestureDetector(
+                  onTap: _pickImage,
+                  child: _fotoBase64 == null
+                      ? const Column(
+                    children: [
+                      Icon(Icons.camera_alt, size: 50),
+                      SizedBox(height: 8),
+                      Text('Selecione uma foto'),
+                    ],
+                  )
+                      : Image.memory(
+                    base64Decode(_fotoBase64!),
+                    height: 100,
+                    width: 100,
+                    fit: BoxFit.cover,
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context); // Voltar sem salvar
-                    },
-                    child: const Text('Cancelar'),
-                  ),
-                ],
-              ),
-            ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: _salvarCliente,
+                      child: const Text('Salvar'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context); // Voltar sem salvar
+                      },
+                      child: const Text('Cancelar'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
