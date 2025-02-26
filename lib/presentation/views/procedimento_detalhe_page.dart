@@ -21,10 +21,10 @@ class ProcedimentoDetalhesPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Detalhes do Procedimento'),
       ),
-      body: Container(
+      body: /*Container(
         decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(backgroundUrl),
             fit: BoxFit.cover),),
-        child: Padding(
+        child:*/ Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +61,7 @@ class ProcedimentoDetalhesPage extends StatelessWidget {
             ],
           ),
         ),
-      ),
+      //),
     );
   }
 }
