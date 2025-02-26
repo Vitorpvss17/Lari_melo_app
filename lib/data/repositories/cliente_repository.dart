@@ -63,12 +63,12 @@ class ClienteRepository {
           .eq('clienteId', id);
 
       await supabase
-          .from('procedimentos')
+          .from('procedimento')
           .delete()
           .eq('clienteId', id);
 
       await supabase
-          .from('agendamentos')
+          .from('agendamento')
           .delete()
           .eq('clienteId', id);
       await supabase
