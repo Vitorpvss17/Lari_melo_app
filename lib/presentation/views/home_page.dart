@@ -56,11 +56,11 @@ class _HomePageState extends State<HomePage> {
         _clientes.removeWhere((cliente) => cliente.id == id);
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Cliente excluído com sucesso!')),
+        const SnackBar(content: Text('Cliente e dados relacionados excluídos com sucesso!')),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro ao excluir cliente: $e')),
+        SnackBar(content: Text('Erro ao excluir cliente e dados relacionados: $e')),
       );
     }
   }
