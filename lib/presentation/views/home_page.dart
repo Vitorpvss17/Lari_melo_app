@@ -55,6 +55,9 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         _clientes.removeWhere((cliente) => cliente.id == id);
       });
+      setState(() {
+        _agendamentos.removeWhere((agendamento) => agendamento.clienteId == id);
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Cliente e dados relacionados excluídos com sucesso!')),
       );

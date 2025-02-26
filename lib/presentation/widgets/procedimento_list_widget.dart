@@ -37,7 +37,7 @@ class ProcedimentosWidget extends StatelessWidget {
               trailing: IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () {
-                  excluirProcedimento(procedimento.id as int);
+                  excluirProcedimento(procedimento.id);
                 },
               ),
               onTap: () {

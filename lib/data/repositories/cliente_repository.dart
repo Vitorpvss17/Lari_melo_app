@@ -51,7 +51,9 @@ class ClienteRepository {
           .single();
 
       if (cliente['foto'] != null && cliente['foto'].isNotEmpty) {
-        final fileName = cliente['foto'].split('/').last;
+        final url = cliente['foto'] as String;
+        final fileName = url.split('/').last;
+
         await supabase
             .storage
             .from('clientes_fotos')
