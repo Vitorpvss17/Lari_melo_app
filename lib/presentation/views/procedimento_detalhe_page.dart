@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../data/models/procedimento_model.dart';
 
-
 class ProcedimentoDetalhesPage extends StatelessWidget {
   final ProcedimentoModel procedimento;
 
@@ -10,20 +9,31 @@ class ProcedimentoDetalhesPage extends StatelessWidget {
     super.key,
     required this.procedimento,
   });
-  final String backgroundUrl = "https://ufbvcaxhedzauecrgiwd.supabase.co/storage/v1/object/public/background/background.jpeg";
+
+  final String backgroundUrl =
+      "https://ufbvcaxhedzauecrgiwd.supabase.co/storage/v1/object/public/background/background3.jpg";
 
   @override
   Widget build(BuildContext context) {
     final valorFormatado =
-    NumberFormat.simpleCurrency(locale: 'pt_BR').format(procedimento.valor);
+        NumberFormat.simpleCurrency(locale: 'pt_BR').format(procedimento.valor);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detalhes do Procedimento'),
+        title: const Text(
+          'Detalhes do Procedimento',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+              color: Colors.grey),
+        ),
       ),
       body: Container(
-        decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(backgroundUrl),
-            fit: BoxFit.cover),),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: NetworkImage(backgroundUrl), fit: BoxFit.cover),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(

@@ -4,7 +4,6 @@ import 'package:uuid/uuid.dart';
 import '../../../data/models/procedimento_model.dart';
 import '../../../data/repositories/procedimento_repository.dart';
 
-
 class CriarProcedimentoPage extends StatefulWidget {
   final int clienteId;
 
@@ -22,8 +21,8 @@ class _CriarProcedimentoPageState extends State<CriarProcedimentoPage> {
   DateTime _dataSelecionada = DateTime.now();
   var uuid = const Uuid();
   int generatedId = 0;
-  final String backgroundUrl = "https://ufbvcaxhedzauecrgiwd.supabase.co/storage/v1/object/public/background/background.jpeg";
-
+  final String backgroundUrl =
+      "https://ufbvcaxhedzauecrgiwd.supabase.co/storage/v1/object/public/background/background3.jpg";
 
   bool _isSaving = false;
 
@@ -42,10 +41,14 @@ class _CriarProcedimentoPageState extends State<CriarProcedimentoPage> {
     _valorController.dispose();
     super.dispose();
   }
+
   int generateInt8FromUUID() {
     var uuid = const Uuid().v4();
-    String hexPart = uuid.replaceAll('-', '').substring(0, 13); // Pegamos os primeiros 13 caracteres
-    return int.parse(hexPart, radix: 16) % 9007199254740991; // Evita ultrapassar o limite do JavaScript
+    String hexPart = uuid
+        .replaceAll('-', '')
+        .substring(0, 13); // Pegamos os primeiros 13 caracteres
+    return int.parse(hexPart, radix: 16) %
+        9007199254740991; // Evita ultrapassar o limite do JavaScript
   }
 
   Future<void> _salvarProcedimento() async {
@@ -114,11 +117,20 @@ class _CriarProcedimentoPageState extends State<CriarProcedimentoPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Criar Procedimento'),
+        title: const Text(
+          'Criar Procedimento',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+              color: Colors.grey),
+        ),
       ),
       body: Container(
-        decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(backgroundUrl),
-            fit: BoxFit.cover),),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: NetworkImage(backgroundUrl), fit: BoxFit.cover),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
@@ -128,7 +140,9 @@ class _CriarProcedimentoPageState extends State<CriarProcedimentoPage> {
                 TextFormField(
                   controller: _tituloController,
                   decoration: const InputDecoration(labelText: 'Título'),
-                  validator: (value) => value?.isEmpty ?? true ? 'Por favor, insira o título' : null,
+                  validator: (value) => value?.isEmpty ?? true
+                      ? 'Por favor, insira o título'
+                      : null,
                 ),
                 TextFormField(
                   controller: _descricaoController,
@@ -136,17 +150,21 @@ class _CriarProcedimentoPageState extends State<CriarProcedimentoPage> {
                   maxLines: null,
                   keyboardType: TextInputType.multiline,
                   textInputAction: TextInputAction.newline,
-                  validator: (value) => value?.isEmpty ?? true ? 'Por favor, insira a descrição' : null,
+                  validator: (value) => value?.isEmpty ?? true
+                      ? 'Por favor, insira a descrição'
+                      : null,
                 ),
                 TextFormField(
                   controller: _valorController,
                   decoration: const InputDecoration(labelText: 'Valor'),
                   keyboardType: TextInputType.number,
                   validator: (value) {
-                    if (value?.isEmpty ?? true) return 'Por favor, insira o valor';
+                    if (value?.isEmpty ?? true)
+                      return 'Por favor, insira o valor';
                     try {
                       double parsedValue = double.parse(value!);
-                      if (parsedValue <= 0) return 'O valor deve ser maior que zero';
+                      if (parsedValue <= 0)
+                        return 'O valor deve ser maior que zero';
                     } catch (e) {
                       return 'Por favor, insira um valor válido';
                     }

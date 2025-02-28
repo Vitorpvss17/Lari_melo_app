@@ -34,7 +34,7 @@ class AgendamentosWidget extends StatelessWidget {
               trailing: IconButton(
                 icon: const Icon(Icons.delete),
                 onPressed: () {
-                  excluirAgendamento(agendamento.id as int);
+                  excluirAgendamento(agendamento.id);
                 },
               ),
             );

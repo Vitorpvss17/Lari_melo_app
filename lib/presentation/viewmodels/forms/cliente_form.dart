@@ -5,8 +5,6 @@ import '../../../data/models/cliente_model.dart';
 import '../../../data/repositories/cliente_repository.dart';
 import 'package:image_picker/image_picker.dart';
 
-
-
 class CriarClientePage extends StatefulWidget {
   const CriarClientePage({super.key});
 
@@ -22,9 +20,11 @@ class _CriarClientePageState extends State<CriarClientePage> {
   final _emailController = TextEditingController();
   String? _fotoBase64;
   final supabase = Supabase.instance.client;
-  final String backgroundUrl = "https://ufbvcaxhedzauecrgiwd.supabase.co/storage/v1/object/public/background/background.jpeg";
+  final String backgroundUrl =
+      "https://ufbvcaxhedzauecrgiwd.supabase.co/storage/v1/object/public/background/background3.jpg";
 
-  final ClienteRepository _clienteRepository = ClienteRepository(); // Usando o repositório
+  final ClienteRepository _clienteRepository =
+      ClienteRepository(); // Usando o repositório
 
   @override
   void dispose() {
@@ -54,12 +54,12 @@ class _CriarClientePageState extends State<CriarClientePage> {
         // Envia os bytes diretamente para o Supabase Storage
         await supabase.storage
             .from('clientes_fotos') // Nome do bucket
-            .uploadBinary(fileName, bytes); // Usa uploadBinary para enviar bytes
+            .uploadBinary(
+                fileName, bytes); // Usa uploadBinary para enviar bytes
 
         // Obtém a URL pública da imagem
-        final imageUrl = supabase.storage
-            .from('clientes_fotos')
-            .getPublicUrl(fileName);
+        final imageUrl =
+            supabase.storage.from('clientes_fotos').getPublicUrl(fileName);
 
         // Cria o cliente com a URL da imagem
         ClienteModel novoCliente = ClienteModel(
@@ -83,7 +83,8 @@ class _CriarClientePageState extends State<CriarClientePage> {
   }
 
   Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       final bytes = await pickedFile.readAsBytes();
       final base64String = base64Encode(bytes);
@@ -101,11 +102,20 @@ class _CriarClientePageState extends State<CriarClientePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Criar Cliente'),
+        title: const Text(
+          'Criar Cliente',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+              color: Colors.grey),
+        ),
       ),
       body: Container(
-        decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(backgroundUrl),
-            fit: BoxFit.cover),),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: NetworkImage(backgroundUrl), fit: BoxFit.cover),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
@@ -148,7 +158,8 @@ class _CriarClientePageState extends State<CriarClientePage> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Por favor, insira o email';
-                    } /*else if (!RegExp(r'^[\w-]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                    }
+                    /*else if (!RegExp(r'^[\w-]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
                       return 'Por favor, insira um email válido';
                     }*/
                     return null;
@@ -159,18 +170,18 @@ class _CriarClientePageState extends State<CriarClientePage> {
                   onTap: _pickImage,
                   child: _fotoBase64 == null
                       ? const Column(
-                    children: [
-                      Icon(Icons.camera_alt, size: 50),
-                      SizedBox(height: 8),
-                      Text('Selecione uma foto'),
-                    ],
-                  )
+                          children: [
+                            Icon(Icons.camera_alt, size: 50),
+                            SizedBox(height: 8),
+                            Text('Selecione uma foto'),
+                          ],
+                        )
                       : Image.memory(
-                    base64Decode(_fotoBase64!),
-                    height: 100,
-                    width: 100,
-                    fit: BoxFit.cover,
-                  ),
+                          base64Decode(_fotoBase64!),
+                          height: 100,
+                          width: 100,
+                          fit: BoxFit.cover,
+                        ),
                 ),
                 const SizedBox(height: 20),
                 Row(
@@ -196,5 +207,3 @@ class _CriarClientePageState extends State<CriarClientePage> {
     );
   }
 }
-
-

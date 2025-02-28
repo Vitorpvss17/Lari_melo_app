@@ -4,10 +4,8 @@ import 'package:uuid/uuid.dart';
 import '../../../data/models/receita_model.dart';
 import '../../../data/repositories/receita_repository.dart';
 
-
 class CriarReceitaPage extends StatefulWidget {
   final int clienteId;
-
 
   const CriarReceitaPage({super.key, required this.clienteId});
 
@@ -22,10 +20,8 @@ class _CriarReceitaPageState extends State<CriarReceitaPage> {
   final _servicoController = TextEditingController();
   final _valorController = TextEditingController();
   DateTime _dataSelecionada = DateTime.now();
-  final String backgroundUrl = "https://ufbvcaxhedzauecrgiwd.supabase.co/storage/v1/object/public/background/background.jpeg";
-
-
-
+  final String backgroundUrl =
+      "https://ufbvcaxhedzauecrgiwd.supabase.co/storage/v1/object/public/background/background3.jpg";
 
   final ReceitaRepository _receitaRepository = ReceitaRepository();
 
@@ -36,10 +32,14 @@ class _CriarReceitaPageState extends State<CriarReceitaPage> {
     super.initState();
     generatedId = generateInt8FromUUID(); // Gera o ID uma vez
   }
+
   int generateInt8FromUUID() {
     var uuid = const Uuid().v4();
-    String hexPart = uuid.replaceAll('-', '').substring(0, 13); // Pegamos os primeiros 13 caracteres
-    return int.parse(hexPart, radix: 16) % 9007199254740991; // Evita ultrapassar o limite do JavaScript
+    String hexPart = uuid
+        .replaceAll('-', '')
+        .substring(0, 13); // Pegamos os primeiros 13 caracteres
+    return int.parse(hexPart, radix: 16) %
+        9007199254740991; // Evita ultrapassar o limite do JavaScript
   }
 
   @override
@@ -58,7 +58,8 @@ class _CriarReceitaPageState extends State<CriarReceitaPage> {
         titulo: _tituloController.text,
         descricao: _descricaoController.text,
         valor: double.tryParse(_valorController.text) ?? 0.0,
-        data: _dataSelecionada, servico: _servicoController.text,
+        data: _dataSelecionada,
+        servico: _servicoController.text,
         id: generatedId,
       );
 
@@ -95,11 +96,20 @@ class _CriarReceitaPageState extends State<CriarReceitaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Criar Receita'),
+        title: const Text(
+          'Criar Receita',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+              color: Colors.grey),
+        ),
       ),
       body: Container(
-        decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(backgroundUrl),
-            fit: BoxFit.cover),),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: NetworkImage(backgroundUrl), fit: BoxFit.cover),
+        ),
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(

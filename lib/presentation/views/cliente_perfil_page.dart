@@ -31,9 +31,8 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
   TimeOfDay? _selectedTime;
   final TextEditingController _servicoController = TextEditingController();
   int generatedId = 0;
-  final String backgroundUrl = "https://ufbvcaxhedzauecrgiwd.supabase.co/storage/v1/object/public/background/background.jpeg";
-
-
+  final String backgroundUrl =
+      "https://ufbvcaxhedzauecrgiwd.supabase.co/storage/v1/object/public/background/background3.jpg";
 
   @override
   void initState() {
@@ -44,31 +43,34 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
 
   int generateInt8FromUUID() {
     var uuid = const Uuid().v4();
-    String hexPart = uuid.replaceAll('-', '').substring(0, 13); // Pegamos os primeiros 13 caracteres
-    return int.parse(hexPart, radix: 16) % 9007199254740991; // Evita ultrapassar o limite do JavaScript
+    String hexPart = uuid.replaceAll('-', '').substring(0, 13);
+    return int.parse(hexPart, radix: 16) % 9007199254740991;
   }
 
   void _carregarDados() {
     setState(() {
-      _agendamentos = AgendamentoRepository().fetchAgendamentos(clienteId: widget.cliente.id);
-      _receitas = ReceitaRepository().fetchReceitas(clienteId: widget.cliente.id);
-      _procedimentos = ProcedimentoRepository().fetchProcedimentos(clienteId: widget.cliente.id);
+      _agendamentos = AgendamentoRepository()
+          .fetchAgendamentos(clienteId: widget.cliente.id);
+      _receitas =
+          ReceitaRepository().fetchReceitas(clienteId: widget.cliente.id);
+      _procedimentos = ProcedimentoRepository()
+          .fetchProcedimentos(clienteId: widget.cliente.id);
     });
   }
 
   Future<void> _excluirReceita(int receitaId) async {
     await ReceitaRepository().deleteReceita(receitaId);
-    _carregarDados(); // Recarrega os dados após excluir
+    _carregarDados();
   }
 
   Future<void> _excluirProcedimento(int procedimentoId) async {
     await ProcedimentoRepository().deleteProcedimento(procedimentoId);
-    _carregarDados(); // Recarrega os dados após excluir
+    _carregarDados();
   }
 
   Future<void> _excluirAgendamento(int agendamentoId) async {
     await AgendamentoRepository().deleteAgendamento(agendamentoId);
-    _carregarDados(); // Recarrega os dados após excluir
+    _carregarDados();
   }
 
   Future<void> _selecionarData(BuildContext context) async {
@@ -98,7 +100,9 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
   }
 
   Future<void> _confirmarAgendamento() async {
-    if (_selectedDate != null && _selectedTime != null && _servicoController.text.isNotEmpty) {
+    if (_selectedDate != null &&
+        _selectedTime != null &&
+        _servicoController.text.isNotEmpty) {
       // Combina a data e a hora selecionadas
       final DateTime fullDateTime = DateTime(
         _selectedDate!.year,
@@ -113,7 +117,7 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
         clienteId: widget.cliente.id,
         data: fullDateTime,
         servico: _servicoController.text,
-        id: generatedId, // Captura o serviço inserido
+        id: generatedId,
       );
 
       try {
@@ -122,7 +126,8 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
 
         // Atualiza a lista de agendamentos
         setState(() {
-          _agendamentos = AgendamentoRepository().fetchAgendamentos(clienteId: widget.cliente.id);
+          _agendamentos = AgendamentoRepository()
+              .fetchAgendamentos(clienteId: widget.cliente.id);
         });
 
         // Exibe uma mensagem de sucesso
@@ -144,17 +149,24 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Perfil do Cliente'),
+        title: const Text(
+          'Perfil do Cliente',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
+              color: Colors.grey),
+        ),
       ),
       body: Container(
-        decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(backgroundUrl),
-            fit: BoxFit.cover),),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: NetworkImage(backgroundUrl), fit: BoxFit.cover),
+        ),
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -168,9 +180,11 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
-                    return const Center(child: Text('Erro ao carregar agendamentos.'));
+                    return const Center(
+                        child: Text('Erro ao carregar agendamentos.'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('Nenhum agendamento encontrado.'));
+                    return const Center(
+                        child: Text('Nenhum agendamento encontrado.'));
                   } else {
                     final agendamentos = snapshot.data!;
                     return AgendamentosWidget(
@@ -187,9 +201,11 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
-                    return const Center(child: Text('Erro ao carregar receitas.'));
+                    return const Center(
+                        child: Text('Erro ao carregar receitas.'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('Nenhuma receita encontrada.'));
+                    return const Center(
+                        child: Text('Nenhuma receita encontrada.'));
                   } else {
                     final receitas = snapshot.data!;
                     return ReceitasWidget(
@@ -206,9 +222,11 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
-                    return const Center(child: Text('Erro ao carregar procedimentos.'));
+                    return const Center(
+                        child: Text('Erro ao carregar procedimentos.'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('Nenhum procedimento encontrado.'));
+                    return const Center(
+                        child: Text('Nenhum procedimento encontrado.'));
                   } else {
                     final procedimentos = snapshot.data!;
                     return ProcedimentosWidget(
@@ -274,7 +292,8 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
                                 child: const Text('Confirmar'),
                                 onPressed: () async {
                                   await _confirmarAgendamento();
-                                  Navigator.of(context).pop(); // Fechar o pop-up
+                                  Navigator.of(context)
+                                      .pop(); // Fechar o pop-up
                                 },
                               ),
                             ],
@@ -289,9 +308,11 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CriarReceitaPage(clienteId: widget.cliente.id),
+                          builder: (context) =>
+                              CriarReceitaPage(clienteId: widget.cliente.id),
                         ),
-                      ).then((_) => _carregarDados()); // Recarrega os dados após retornar
+                      ).then((_) =>
+                          _carregarDados()); // Recarrega os dados após retornar
                     },
                     child: const Text('Nova Receita'),
                   ),
@@ -300,9 +321,11 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => CriarProcedimentoPage(clienteId: widget.cliente.id),
+                          builder: (context) => CriarProcedimentoPage(
+                              clienteId: widget.cliente.id),
                         ),
-                      ).then((_) => _carregarDados()); // Recarrega os dados após retornar
+                      ).then((_) =>
+                          _carregarDados()); // Recarrega os dados após retornar
                     },
                     child: const Text('Novo Procedimento'),
                   ),
