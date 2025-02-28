@@ -258,6 +258,7 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
                                   ),
                                 ),
                                 const SizedBox(height: 16),
+
                                 // Botão para selecionar a data
                                 ElevatedButton(
                                   onPressed: () async {
@@ -301,7 +302,14 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
                         },
                       );
                     },
-                    child: const Text('Agendar'),
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(Icons.calendar_month_outlined),
+                        SizedBox(width: 10),
+                        Text('Agendar'),
+                      ],
+                    ),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -314,7 +322,13 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
                       ).then((_) =>
                           _carregarDados()); // Recarrega os dados após retornar
                     },
-                    child: const Text('Nova Receita'),
+                    child:  const Column(
+                      children: [
+                        Icon(Icons.add_circle_outline),
+                        SizedBox(width: 10),
+                        Text('Nova Receita'),
+                      ],
+                    ),
                   ),
                   ElevatedButton(
                     onPressed: () {
@@ -327,7 +341,13 @@ class _ClienteViewPageState extends State<ClienteViewPage> {
                       ).then((_) =>
                           _carregarDados()); // Recarrega os dados após retornar
                     },
-                    child: const Text('Novo Procedimento'),
+                    child: const Column(
+                      children: [
+                        Icon(Icons.add_circle_outline),
+                        SizedBox(width: 10),
+                        Text('Novo Procedimento'),
+                      ],
+                    ),
                   ),
                 ],
               ),

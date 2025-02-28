@@ -159,12 +159,14 @@ class _CriarProcedimentoPageState extends State<CriarProcedimentoPage> {
                   decoration: const InputDecoration(labelText: 'Valor'),
                   keyboardType: TextInputType.number,
                   validator: (value) {
-                    if (value?.isEmpty ?? true)
+                    if (value?.isEmpty ?? true) {
                       return 'Por favor, insira o valor';
+                    }
                     try {
                       double parsedValue = double.parse(value!);
-                      if (parsedValue <= 0)
+                      if (parsedValue <= 0) {
                         return 'O valor deve ser maior que zero';
+                      }
                     } catch (e) {
                       return 'Por favor, insira um valor válido';
                     }
@@ -181,7 +183,13 @@ class _CriarProcedimentoPageState extends State<CriarProcedimentoPage> {
                     const SizedBox(width: 10),
                     ElevatedButton(
                       onPressed: () => _selecionarData(context),
-                      child: const Text('Selecionar Data'),
+                      child: const Column(
+                        children: [
+                          Text('Selecionar Data'),
+                          Icon(Icons.calendar_month_outlined),
+                          SizedBox(width: 10),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -190,7 +198,13 @@ class _CriarProcedimentoPageState extends State<CriarProcedimentoPage> {
                   onPressed: _isSaving ? null : _salvarProcedimento,
                   child: _isSaving
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text('Salvar'),
+                      : const Column(
+                        children: [
+                          Text('Salvar'),
+                          Icon(Icons.save_outlined),
+                          SizedBox(width: 10),
+                        ],
+                      ),
                 ),
               ],
             ),

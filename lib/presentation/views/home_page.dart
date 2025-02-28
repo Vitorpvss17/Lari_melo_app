@@ -233,7 +233,13 @@ class _HomePageState extends State<HomePage> {
                             builder: (context) => const CriarClientePage()),
                       ).then((_) => _loadData());
                     },
-                    child: const Text('Adicionar Cliente'),
+                    child:  const Column(
+                      children: [
+                        Icon(Icons.add_circle_outline),
+                        SizedBox(width: 10),
+                        Text('Adicionar Cliente'),
+                      ],
+                    ),
                   ),
                 ],
               ),

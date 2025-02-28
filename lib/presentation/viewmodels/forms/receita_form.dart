@@ -176,14 +176,26 @@ class _CriarReceitaPageState extends State<CriarReceitaPage> {
                     ),
                     ElevatedButton(
                       onPressed: () => _selecionarData(context),
-                      child: const Text('Selecionar Data'),
+                      child: const Column(
+                        children: [
+                          Text('Selecionar Data'),
+                          Icon(Icons.calendar_month_outlined),
+                          SizedBox(width: 10),
+                        ],
+                      ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: _salvarReceita,
-                  child: const Text('Salvar'),
+                  child: const Column(
+                    children: [
+                      Text('Salvar'),
+                      Icon(Icons.save_outlined),
+                      SizedBox(width: 10),
+                    ],
+                  ),
                 ),
               ],
             ),

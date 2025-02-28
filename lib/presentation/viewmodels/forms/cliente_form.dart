@@ -189,13 +189,25 @@ class _CriarClientePageState extends State<CriarClientePage> {
                   children: [
                     ElevatedButton(
                       onPressed: _salvarCliente,
-                      child: const Text('Salvar'),
+                      child: const Column(
+                        children: [
+                          Text('Salvar'),
+                          Icon(Icons.add_circle_outline),
+                          SizedBox(width: 10),
+                        ],
+                      ),
                     ),
                     ElevatedButton(
                       onPressed: () {
                         Navigator.pop(context); // Voltar sem salvar
                       },
-                      child: const Text('Cancelar'),
+                      child: const Column(
+                        children: [
+                          Text('Cancelar'),
+                          Icon(Icons.cancel_outlined),
+                          SizedBox(width: 10),
+                        ],
+                      ),
                     ),
                   ],
                 ),
