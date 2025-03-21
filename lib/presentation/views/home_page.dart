@@ -112,7 +112,7 @@ class _HomePageState extends State<HomePage> {
           logoUrl,
         ),
         title: const Text(
-          'Bem vinda, Dra. Larissa Melo!',
+          'Bem vindaa, Dra. Larissa Melo!',
           textAlign: TextAlign.center,
           style: TextStyle(
               fontWeight: FontWeight.bold,
